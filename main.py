@@ -2,14 +2,14 @@ from time import sleep
 from sys import stdin, stdout
 from subprocess import run
 from pynput import keyboard
+from lib import load_env
 import os
 
-path = 'D:\games\osu!' #osu! path
-delay = 100           #delay between f2 and action, ms
+config = load_env('config.env')
 
 def logic() -> None:
-    game_path = path + '\osu!.exe'
-    replays_path = path + '\Replays'
+    game_path = config['GAME_PATH'] + '\osu!.exe'
+    replays_path = config['GAME_PATH'] + '\Replays'
 
     if not os.path.exists(game_path):
         stdout.write('ERROR: File osu!.exe not found.\n')
@@ -36,7 +36,7 @@ def main() -> None:
 
     def on_press(key):
         if key == keyboard.Key.f2:
-            sleep(delay / 1000)
+            sleep(int(config['DELAY']) / 1000)
             logic()
     
     def on_release(key):
